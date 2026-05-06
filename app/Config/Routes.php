@@ -1,11 +1,22 @@
 <?php
 
-use CodeIgniter\Router\RouteCollection;
+namespace Config;
 
-/**
- * @var RouteCollection $routes
- */
-$routes->get('/', 'Home::index');
+$routes = Services::routes();
 
-// vers liste d'etudiant
-$routes->get('/students', 'StudentController::index');
+$routes->setAutoRoute(false);
+
+// Routes publiques
+$routes->get('/', 'HomeController::index');
+$routes->get('/login', 'AuthController::loginForm');
+$routes->post('/login', 'AuthController::login');
+$routes->get('/logout', 'AuthController::logout');
+
+// Back Office Admin
+$routes->group('admin', ['filter' => 'role:admin'], function($routes) {
+    $routes->get('dashboard', 'Admin\DashboardController::index');
+    $routes->resource('regimes', ['controller' => 'Admin\RegimeController']);
+    $routes->resource('sports', ['controller' => 'Admin\SportController']);
+    $routes->resource('codes', ['controller' => 'Admin\CodeController']);
+    $routes->resource('parametres', ['controller' => 'Admin\ParametreController']);
+});
