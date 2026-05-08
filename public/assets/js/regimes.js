@@ -1,35 +1,40 @@
 // ============================================
-// REGIMES JS - 2026
+// REGIMES JS — Regime Expert 2026
 // ============================================
 
+'use strict';
+
 $(document).ready(function() {
-    // Initialize DataTable
-    if($('#regimesTable').length) {
+    if ($('#regimesTable').length) {
         $('#regimesTable').DataTable({
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/fr-FR.json'
-            },
-            pageLength: 10,
-            responsive: true
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/fr-FR.json' },
+            pageLength:  10,
+            responsive:  true,
+            dom:         '<"dt-top"lf>rt<"dt-bot"ip>',
+            drawCallback: function() {
+                // Wrap in scroll div on redraw
+                if (!$('.data-table-wrap').length) {
+                    $('#regimesTable').wrap('<div class="data-table-wrap"></div>');
+                }
+            }
         });
     }
-    
-    // Initialize form validation
-    if($('#regimeForm').length) {
+
+    if ($('#regimeForm').length) {
         updateTotal();
         $('#viande, #poisson, #volaille').on('input', updateTotal);
     }
 });
 
 function updateTotal() {
-    let viande = parseFloat($('#viande').val()) || 0;
-    let poisson = parseFloat($('#poisson').val()) || 0;
-    let volaille = parseFloat($('#volaille').val()) || 0;
-    let total = viande + poisson + volaille;
-    
+    const v = parseFloat($('#viande').val())  || 0;
+    const p = parseFloat($('#poisson').val()) || 0;
+    const vol = parseFloat($('#volaille').val()) || 0;
+    const total = v + p + vol;
+
     $('#totalPourcent').text(total.toFixed(2));
-    
-    if(Math.abs(total - 100) > 0.01) {
+
+    if (Math.abs(total - 100) > 0.01) {
         $('#totalDisplay').addClass('error');
     } else {
         $('#totalDisplay').removeClass('error');
@@ -37,62 +42,45 @@ function updateTotal() {
 }
 
 function submitRegimeForm(url) {
-    let viande = parseFloat($('#viande').val()) || 0;
-    let poisson = parseFloat($('#poisson').val()) || 0;
-    let volaille = parseFloat($('#volaille').val()) || 0;
-    let total = viande + poisson + volaille;
-    
-    if(Math.abs(total - 100) > 0.01) {
-        showNotification('error', 'La somme des pourcentages doit être égale à 100%');
+    if (!navigator.onLine) {
+        showNotification('warning', 'Hors connexion', 'Impossible d\'enregistrer sans connexion');
         return;
     }
-    
-    $.ajax({
-        url: url,
+
+    const v   = parseFloat($('#viande').val())   || 0;
+    const p   = parseFloat($('#poisson').val())  || 0;
+    const vol = parseFloat($('#volaille').val()) || 0;
+    const total = v + p + vol;
+
+    if (Math.abs(total - 100) > 0.01) {
+        showNotification('error', 'Composition invalide', 'La somme des pourcentages doit être 100 %');
+        return;
+    }
+
+    adminAjax({
+        url,
         method: 'POST',
-        data: $('#regimeForm').serialize(),
-        beforeSend: showLoader,
-        success: function(response) {
-            if(response.success || response.message) {
-                showNotification('success', response.message || 'Régime enregistré avec succès');
-                setTimeout(() => {
-                    window.location.href = '/admin/regimes';
-                }, 1500);
-            } else {
-                showNotification('success', 'Opération réussie');
-                setTimeout(() => {
-                    window.location.href = '/admin/regimes';
-                }, 1500);
-            }
-        },
-        error: function(xhr) {
-            let response = xhr.responseJSON;
-            if(response && response.message) {
-                showNotification('error', response.message);
-            } else {
-                showNotification('error', 'Une erreur est survenue');
-            }
-        },
-        complete: hideLoader
+        data:   $('#regimeForm').serialize(),
+        success: function(res) {
+            showNotification('success', 'Régime enregistré', res.message || '');
+            setTimeout(() => { window.location.href = '/admin/regimes'; }, 1600);
+        }
     });
 }
 
 function deleteRegime(id, nom) {
-    if(confirm(`Supprimer définitivement le régime "${nom}" ? Cette action est irréversible.`)) {
-        $.ajax({
-            url: `/admin/regimes/delete/${id}`,
-            method: 'GET',
-            beforeSend: showLoader,
-            success: function(response) {
-                showNotification('success', 'Régime supprimé avec succès');
-                $(`#row-${id}`).fadeOut(300, function() {
-                    $(this).remove();
-                });
-            },
-            error: function() {
-                showNotification('error', 'Erreur lors de la suppression');
-            },
-            complete: hideLoader
-        });
+    if (!navigator.onLine) {
+        showNotification('warning', 'Hors connexion', 'Impossible de supprimer sans connexion');
+        return;
     }
+
+    confirmDelete(`Supprimer définitivement le régime "${nom}" ?`, function() {
+        adminAjax({
+            url: `/admin/regimes/delete/${id}`,
+            success: function() {
+                showNotification('success', 'Régime supprimé', `"${nom}" a été supprimé`);
+                $(`#row-${id}`).addClass('out').fadeOut(350, function() { $(this).remove(); });
+            }
+        });
+    });
 }

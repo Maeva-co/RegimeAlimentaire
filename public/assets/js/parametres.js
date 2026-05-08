@@ -1,29 +1,28 @@
 // ============================================
-// PARAMETRES JS - 2026
+// PARAMETRES JS — Regime Expert 2026
 // ============================================
 
+'use strict';
+
 function submitParametreForm(url) {
-    let valeur = $('#valeur').val().trim();
-    if(valeur === '') {
-        showNotification('error', 'La valeur ne peut pas être vide');
+    if (!navigator.onLine) {
+        showNotification('warning', 'Hors connexion', 'Impossible de mettre à jour sans connexion');
         return;
     }
-    
-    $.ajax({
-        url: url,
+
+    const valeur = $('#valeur').val().trim();
+    if (!valeur) {
+        showNotification('error', 'Valeur manquante', 'La valeur ne peut pas être vide');
+        return;
+    }
+
+    adminAjax({
+        url,
         method: 'POST',
-        data: $('#parametreForm').serialize(),
-        beforeSend: showLoader,
-        success: function(response) {
-            showNotification('success', 'Paramètre mis à jour avec succès');
-            setTimeout(() => {
-                window.location.href = '/admin/parametres';
-            }, 1500);
-        },
-        error: function(xhr) {
-            let response = xhr.responseJSON;
-            showNotification('error', response?.message || 'Une erreur est survenue');
-        },
-        complete: hideLoader
+        data:   $('#parametreForm').serialize(),
+        success: function() {
+            showNotification('success', 'Paramètre mis à jour');
+            setTimeout(() => { window.location.href = '/admin/parametres'; }, 1600);
+        }
     });
 }

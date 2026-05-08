@@ -1,68 +1,62 @@
 // ============================================
-// CODES JS - 2026
+// CODES JS — Regime Expert 2026
 // ============================================
 
+'use strict';
+
 $(document).ready(function() {
-    if($('#codesTable').length) {
+    if ($('#codesTable').length) {
         $('#codesTable').DataTable({
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/fr-FR.json'
-            },
-            pageLength: 10,
-            responsive: true,
-            order: [[0, 'desc']]
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/fr-FR.json' },
+            pageLength:  10,
+            responsive:  true,
+            order:       [[0, 'desc']]
         });
     }
 });
 
 function submitCodeForm(url) {
-    let code = $('#code').val().trim();
-    if(code.length < 3) {
-        showNotification('error', 'Le code doit contenir au moins 3 caractères');
+    if (!navigator.onLine) {
+        showNotification('warning', 'Hors connexion', 'Impossible d\'enregistrer sans connexion');
         return;
     }
-    
-    let valeur = parseFloat($('#valeur').val());
-    if(isNaN(valeur) || valeur <= 0) {
-        showNotification('error', 'La valeur doit être un nombre positif');
+
+    const code = $('#code').val().trim();
+    if (code.length < 3) {
+        showNotification('error', 'Code invalide', 'Le code doit contenir au moins 3 caractères');
         return;
     }
-    
-    $.ajax({
-        url: url,
+
+    const valeur = parseFloat($('#valeur').val());
+    if (isNaN(valeur) || valeur <= 0) {
+        showNotification('error', 'Valeur invalide', 'La valeur doit être un nombre positif');
+        return;
+    }
+
+    adminAjax({
+        url,
         method: 'POST',
-        data: $('#codeForm').serialize(),
-        beforeSend: showLoader,
-        success: function(response) {
-            showNotification('success', response.message || 'Code enregistré avec succès');
-            setTimeout(() => {
-                window.location.href = '/admin/codes';
-            }, 1500);
-        },
-        error: function(xhr) {
-            let response = xhr.responseJSON;
-            showNotification('error', response?.message || 'Une erreur est survenue');
-        },
-        complete: hideLoader
+        data:   $('#codeForm').serialize(),
+        success: function(res) {
+            showNotification('success', 'Code enregistré', res.message || '');
+            setTimeout(() => { window.location.href = '/admin/codes'; }, 1600);
+        }
     });
 }
 
 function deleteCode(id) {
-    if(confirm('Supprimer définitivement ce code ?')) {
-        $.ajax({
-            url: `/admin/codes/delete/${id}`,
-            method: 'GET',
-            beforeSend: showLoader,
-            success: function(response) {
-                showNotification('success', 'Code supprimé avec succès');
-                $(`#row-${id}`).fadeOut(300, function() {
-                    $(this).remove();
-                });
-            },
-            error: function() {
-                showNotification('error', 'Erreur lors de la suppression');
-            },
-            complete: hideLoader
-        });
+    if (!navigator.onLine) {
+        showNotification('warning', 'Hors connexion', 'Impossible de supprimer sans connexion');
+        return;
     }
+
+    confirmDelete('Supprimer définitivement ce code promo ?', function() {
+        adminAjax({
+            url: `/admin/codes/delete/${id}`,
+            success: function() {
+                showNotification('success', 'Code supprimé');
+                $(`#row-${id}`).fadeOut(350, function() { $(this).remove(); });
+            }
+        });
+    });
 }
