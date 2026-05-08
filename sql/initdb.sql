@@ -9,7 +9,7 @@ CREATE TABLE User (
     nom VARCHAR(100),
     email VARCHAR(150) UNIQUE,
     genre VARCHAR(20),
-    taille DECIMAL(5,2),      -- en cm ou m
+    taille DECIMAL(5,2),      -- en  m
     poids DECIMAL(5,2),       -- en kg
     IMC DECIMAL(5,2),
     balance DECIMAL(8,2)
