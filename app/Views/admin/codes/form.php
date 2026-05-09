@@ -15,7 +15,9 @@
     <div class="card-body">
 
         <form id="codeForm" onsubmit="event.preventDefault(); submitCodeForm('/admin/codes/<?= isset($code) ? "update/{$code['id']}" : 'store' ?>');">
-
+            
+            <?= csrf_field() ?>
+            
             <div class="form-row-3">
                 <div class="form-group">
                     <label><i class="fas fa-hashtag"></i> Code promo *</label>
@@ -30,11 +32,12 @@
                     <label><i class="fas fa-euro-sign"></i> Valeur (€) *</label>
                     <input type="number" step="0.01" name="valeur" id="valeur"
                            value="<?= old('valeur', $code['valeur'] ?? '') ?>"
-                           placeholder="Ex: 10.00" required>
+                           placeholder="Ex: 10.00" 
+                           required>
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-calendar-alt"></i> Date d'expiration</label>
-                    <input type="date" name="expire_le"
+                    <input type="date" name="expire_le" id="expire_le"
                            value="<?= old('expire_le', $code['expire_le'] ?? '') ?>">
                     <div class="form-hint"><i class="fas fa-info-circle"></i> Optionnel</div>
                 </div>

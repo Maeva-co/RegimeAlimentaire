@@ -45,11 +45,28 @@ class ParametreController extends BaseController
     {
         $model = new ParametreModel();
         
-        $data = [
-            'valeur' => $this->request->getPost('valeur')
-        ];
+        $parametre = $model->find($id);
+        if (!$parametre) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Paramètre non trouvé'
+            ]);
+        }
         
-        $model->update($id, $data);
-        return redirect()->to('/admin/parametres')->with('success', 'Paramètre modifié avec succès');
+        $valeur = trim($this->request->getPost('valeur'));
+        
+        if (empty($valeur)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'La valeur ne peut pas être vide'
+            ]);
+        }
+        
+        $model->update($id, ['valeur' => $valeur]);
+        
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Paramètre modifié avec succès'
+        ]);
     }
 }

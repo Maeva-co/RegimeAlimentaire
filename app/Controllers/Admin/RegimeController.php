@@ -38,7 +38,7 @@ class RegimeController extends BaseController
         ]);
     }
     
-    public function store()
+   public function store()
     {
         $model = new RegimeModel();
         
@@ -52,15 +52,24 @@ class RegimeController extends BaseController
         
         // Validation
         if (empty($data['nom']) || strlen($data['nom']) < 3) {
-            return redirect()->back()->with('erreur', 'Le nom doit contenir au moins 3 caractères')->withInput();
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'Le nom doit contenir au moins 3 caractères'
+            ]);
         }
         
         if ($data['prix_par_jour'] <= 0) {
-            return redirect()->back()->with('erreur', 'Le prix doit être positif')->withInput();
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'Le prix doit être positif'
+            ]);
         }
         
         if ($data['duree_jours'] <= 0) {
-            return redirect()->back()->with('erreur', 'La durée doit être positive')->withInput();
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'La durée doit être positive'
+            ]);
         }
         
         $model->insert($data);
@@ -72,17 +81,23 @@ class RegimeController extends BaseController
         $volaille = $this->request->getPost('volaille_pourc');
         
         // Vérifier que la somme fait 100
-        if ($viande + $poisson + $volaille != 100) {
+        if ((float)$viande + (float)$poisson + (float)$volaille != 100) {
             $model->delete($idRegime);
-            return redirect()->back()->with('erreur', 'La somme des pourcentages doit être égale à 100%')->withInput();
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'La somme des pourcentages doit être égale à 100%'
+            ]);
         }
         
-        $compModel = new RegimeCompositionModel();
+        $compModel = new \App\Models\RegimeCompositionModel();
         $compModel->insert(['idRegime' => $idRegime, 'type_viande' => 'viande', 'pourcentage' => $viande]);
         $compModel->insert(['idRegime' => $idRegime, 'type_viande' => 'poisson', 'pourcentage' => $poisson]);
         $compModel->insert(['idRegime' => $idRegime, 'type_viande' => 'volaille', 'pourcentage' => $volaille]);
         
-        return redirect()->to('/admin/regimes')->with('success', 'Régime ajouté avec succès');
+        return $this->response->setJSON([
+            'success' => true, 
+            'message' => 'Régime ajouté avec succès'
+        ]);
     }
     
     public function edit($id)
@@ -134,18 +149,34 @@ class RegimeController extends BaseController
         $poisson = $this->request->getPost('poisson_pourc');
         $volaille = $this->request->getPost('volaille_pourc');
         
-        $compModel = new RegimeCompositionModel();
+        $compModel = new \App\Models\RegimeCompositionModel();
         $compModel->where('idRegime', $id)->where('type_viande', 'viande')->set(['pourcentage' => $viande])->update();
         $compModel->where('idRegime', $id)->where('type_viande', 'poisson')->set(['pourcentage' => $poisson])->update();
         $compModel->where('idRegime', $id)->where('type_viande', 'volaille')->set(['pourcentage' => $volaille])->update();
         
-        return redirect()->to('/admin/regimes')->with('success', 'Régime modifié avec succès');
+        return $this->response->setJSON([
+            'success' => true, 
+            'message' => 'Régime modifié avec succès'
+        ]);
     }
     
     public function delete($id)
     {
         $model = new RegimeModel();
+        $regime = $model->find($id);
+        
+        if (!$regime) {
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'Régime non trouvé'
+            ]);
+        }
+        
         $model->delete($id);
-        return redirect()->to('/admin/regimes')->with('success', 'Régime supprimé');
+        
+        return $this->response->setJSON([
+            'success' => true, 
+            'message' => 'Régime supprimé avec succès'
+        ]);
     }
 }

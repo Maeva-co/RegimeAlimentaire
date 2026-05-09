@@ -34,12 +34,31 @@ function submitCodeForm(url) {
     }
 
     adminAjax({
-        url,
+        url: url,
         method: 'POST',
-        data:   $('#codeForm').serialize(),
+        data: $('#codeForm').serialize(),
         success: function(res) {
-            showNotification('success', 'Code enregistré', res.message || '');
-            setTimeout(() => { window.location.href = '/admin/codes'; }, 1600);
+            // ✅ Vérifier si la réponse est un succès
+            if (res.success === true) {
+                showNotification('success', 'Succès', res.message || 'Code enregistré');
+                setTimeout(() => {
+                    window.location.href = '/admin/codes';
+                }, 1600);
+            } else {
+                showNotification('error', 'Erreur', res.message || 'Une erreur est survenue');
+            }
+        },
+        error: function(xhr) {
+            let msg = 'Une erreur est survenue';
+            try {
+                const res = JSON.parse(xhr.responseText);
+                msg = res.message || msg;
+            } catch(e) {
+                if (xhr.status === 403) {
+                    msg = 'Token CSRF invalide. Rechargez la page.';
+                }
+            }
+            showNotification('error', 'Erreur', msg);
         }
     });
 }
@@ -53,9 +72,18 @@ function deleteCode(id) {
     confirmDelete('Supprimer définitivement ce code promo ?', function() {
         adminAjax({
             url: `/admin/codes/delete/${id}`,
-            success: function() {
-                showNotification('success', 'Code supprimé');
-                $(`#row-${id}`).fadeOut(350, function() { $(this).remove(); });
+            success: function(res) {
+                if (res.success === true) {
+                    showNotification('success', 'Succès', res.message || 'Code supprimé');
+                    $(`#row-${id}`).fadeOut(350, function() {
+                        $(this).remove();
+                    });
+                } else {
+                    showNotification('error', 'Erreur', res.message || 'Impossible de supprimer');
+                }
+            },
+            error: function() {
+                showNotification('error', 'Erreur', 'Impossible de supprimer le code');
             }
         });
     });

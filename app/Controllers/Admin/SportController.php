@@ -36,18 +36,33 @@ class SportController extends BaseController
         $model = new SportModel();
         
         $data = [
-            'nom' => $this->request->getPost('nom'),
+            'nom' => trim($this->request->getPost('nom')),
             'description' => $this->request->getPost('description'),
             'variation_poids_grammes' => $this->request->getPost('variation_poids_grammes'),
             'calories_par_heure' => $this->request->getPost('calories_par_heure')
         ];
         
+        // Validation
         if (empty($data['nom']) || strlen($data['nom']) < 3) {
-            return redirect()->back()->with('erreur', 'Le nom doit contenir au moins 3 caractères')->withInput();
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Le nom doit contenir au moins 3 caractères'
+            ]);
+        }
+        
+        if (empty($data['variation_poids_grammes']) || !is_numeric($data['variation_poids_grammes'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'La variation de poids est requise et doit être un nombre'
+            ]);
         }
         
         $model->insert($data);
-        return redirect()->to('/admin/sports')->with('success', 'Sport ajouté avec succès');
+        
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Sport ajouté avec succès'
+        ]);
     }
     
     public function edit($id)
@@ -74,21 +89,54 @@ class SportController extends BaseController
     {
         $model = new SportModel();
         
+        $sport = $model->find($id);
+        if (!$sport) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Sport non trouvé'
+            ]);
+        }
+        
         $data = [
-            'nom' => $this->request->getPost('nom'),
+            'nom' => trim($this->request->getPost('nom')),
             'description' => $this->request->getPost('description'),
             'variation_poids_grammes' => $this->request->getPost('variation_poids_grammes'),
             'calories_par_heure' => $this->request->getPost('calories_par_heure')
         ];
         
+        // Validation
+        if (empty($data['nom']) || strlen($data['nom']) < 3) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Le nom doit contenir au moins 3 caractères'
+            ]);
+        }
+        
         $model->update($id, $data);
-        return redirect()->to('/admin/sports')->with('success', 'Sport modifié avec succès');
+        
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Sport modifié avec succès'
+        ]);
     }
     
     public function delete($id)
     {
         $model = new SportModel();
+        $sport = $model->find($id);
+        
+        if (!$sport) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Sport non trouvé'
+            ]);
+        }
+        
         $model->delete($id);
-        return redirect()->to('/admin/sports')->with('success', 'Sport supprimé');
+        
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Sport supprimé avec succès'
+        ]);
     }
 }

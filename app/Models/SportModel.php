@@ -12,7 +12,7 @@ class SportModel extends Model
         'nom', 'description', 'variation_poids_grammes', 'calories_par_heure'
     ];
     
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $createdField = 'created_at';
     protected $updatedField = null;
     

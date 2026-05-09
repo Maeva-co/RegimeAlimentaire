@@ -13,9 +13,8 @@ class RegimeModel extends Model
         'duree_jours', 'variation_poids_grammes'
     ];
     
-    protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = null;
+    // ⚠️ Désactiver complètement les timestamps
+    protected $useTimestamps = false;
     
     protected $validationRules = [
         'nom' => 'required|min_length[3]',
@@ -41,6 +40,7 @@ class RegimeModel extends Model
         ]
     ];
 
+    // Le reste de tes méthodes (getRegimesPertePoids, etc.) reste identique
     public function getRegimesPertePoids(): array
     {
         return $this
