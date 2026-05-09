@@ -50,7 +50,19 @@ class DashboardController extends BaseController
             ORDER BY variation_poids_grammes DESC
         ")->getResult();
         
+        // Stats supplémentaires pour les cartes
+        $userModel = new UserModel();
+        $regimeModel = new RegimeModel();
+        $sportModel = new SportModel();
+        $codeModel = new CodeModel();
+        
         return $this->response->setJSON([
+            'stats' => [
+                'users' => $userModel->countAll(),
+                'regimes' => $regimeModel->countAll(),
+                'sports' => $sportModel->countAll(),
+                'codes' => $codeModel->countAll()
+            ],
             'regimes' => $regimesParVariation,
             'sports' => $sportsParVariation
         ]);
