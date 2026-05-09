@@ -27,4 +27,20 @@ class SportModel extends Model
             'min_length' => 'Le nom doit contenir au moins 3 caractères'
         ]
     ];
+
+    public function getSportsPertePoids(): array
+    {
+        return $this
+            ->where('variation_poids_grammes <', 0)
+            ->orderBy('variation_poids_grammes', 'ASC')
+            ->findAll();
+    }
+
+    public function getSportsGainPoids(): array
+    {
+        return $this
+            ->where('variation_poids_grammes >', 0)
+            ->orderBy('variation_poids_grammes', 'DESC')
+            ->findAll();
+    }
 }

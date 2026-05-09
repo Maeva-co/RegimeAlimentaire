@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\RegimeModel;
+use App\Models\SportModel;
 use App\Models\UserModel;
 
 class RegimeController extends BaseController
@@ -43,7 +44,9 @@ class RegimeController extends BaseController
         }
 
         $regimeModel = new RegimeModel();
+        $sportModel = new SportModel();
         $regimes = [];
+        $sports = [];
         $titre = '';
         $intro = '';
 
@@ -51,10 +54,12 @@ class RegimeController extends BaseController
             $titre = 'Perdre du poids';
             $intro = 'Regimes avec une variation negative pour une perte de poids progressive.';
             $regimes = $regimeModel->getRegimesPertePoids();
+            $sports = $sportModel->getSportsPertePoids();
         } elseif ($mode === 'gagner') {
             $titre = 'Gagner du poids';
             $intro = 'Regimes avec une variation positive pour soutenir la prise de poids.';
             $regimes = $regimeModel->getRegimesGainPoids();
+            $sports = $sportModel->getSportsGainPoids();
         } else {
             $titre = 'Atteindre son IMC';
             $intro = 'Un IMC ideal se trouve entre 18,5 et 24,9 , voici ce qu\'on propose';
@@ -69,7 +74,8 @@ class RegimeController extends BaseController
             'titre' => $titre,
             'intro' => $intro,
             'user' => $user,
-            'regimes' => $regimes
+            'regimes' => $regimes,
+            'sports' => $sports
         ]);
     }
 }

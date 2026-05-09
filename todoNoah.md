@@ -18,6 +18,7 @@
     - Deja qu'import le choix , la page affichera en premier une section bilan de l'utilisateur connecte, ce bilan affichera son nom , son genre , son poids , sa taille et som IMC
     - Ensuite voila comment le contenur va varier : si on a choisi /regime/perdre , il affichera les regimes qui permettent de perdre du poids (syntaxe sql a respecter), si on a choisi /regime/gagner, afficher les regimes qui
     permettent de gagner du poids (pour savoir si un regime fait gagner ou perdre du poids, sa variation_poids_grammes sera positif si gain et negatif si perte de poids), si on a choisi l'option d'atteindre son IMC ideal (idealement entre 18,5 bet 24,9)
+    - Afficher les sports adequats pour chaque lien (meme regle que pour les precedents pour perdre et gagner)
     - Note to self : doit respecter structure mvc
 
     

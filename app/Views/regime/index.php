@@ -84,6 +84,42 @@
                 </div>
             <?php endif; ?>
         </section>
+
+        <?php if ($mode === 'perdre' || $mode === 'gagner'): ?>
+            <section class="regime-results">
+                <div class="section-head">
+                    <h2>Sports recommandes</h2>
+                    <span><?= count($sports) ?> sport(s)</span>
+                </div>
+
+                <?php if (!$sports): ?>
+                    <div class="empty-state">
+                        Aucun sport disponible pour cet objectif.
+                    </div>
+                <?php else: ?>
+                    <div class="regime-grid">
+                        <?php foreach ($sports as $sport): ?>
+                            <article class="regime-card">
+                                <div class="regime-title">
+                                    <?= esc($sport['nom']) ?>
+                                    <span class="tag">
+                                        <?= esc($sport['variation_poids_grammes']) ?> g/j
+                                    </span>
+                                </div>
+                                <p><?= esc($sport['description']) ?></p>
+                                <div class="regime-meta">
+                                    <?php if (!empty($sport['calories_par_heure'])): ?>
+                                        <span><?= esc($sport['calories_par_heure']) ?> cal/heure</span>
+                                    <?php else: ?>
+                                        <span>Activite sportive</span>
+                                    <?php endif; ?>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </section>
+        <?php endif; ?>
     </main>
 </body>
 </html>
