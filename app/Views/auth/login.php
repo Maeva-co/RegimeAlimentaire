@@ -122,7 +122,7 @@
                 </div>
                 <div class="demo-accounts">
                     <span><strong>Admin :</strong> admin@regime.com / 1234</span>
-                    <span><strong>User :</strong>  jean@email.com / 1234</span>
+                    <span><strong>User :</strong>  jean@email.com / 2345</span>
                 </div>
             </div>
 
