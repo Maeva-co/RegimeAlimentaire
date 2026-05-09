@@ -56,9 +56,11 @@
 
             <?php if ($mode === 'imc'): ?>
                 <div class="empty-state">
-                    Les recommandations pour l'IMC ideal seront disponibles bientot.
+                    Un IMC ideal se trouve entre 18,5 et 24,9 , voici ce qu'on propose
                 </div>
-            <?php elseif (!$regimes): ?>
+            <?php endif; ?>
+
+            <?php if (!$regimes): ?>
                 <div class="empty-state">
                     Aucun regime disponible pour cet objectif.
                 </div>

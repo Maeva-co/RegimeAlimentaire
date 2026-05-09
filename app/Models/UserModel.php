@@ -36,4 +36,10 @@ class UserModel extends Model
             'min_length' => 'Le mot de passe doit contenir au moins 3 caractères'
         ]
     ];
+
+    public function findUserById(int $id): ?array
+    {
+        $user = $this->find($id);
+        return $user ?: null;
+    }
 }

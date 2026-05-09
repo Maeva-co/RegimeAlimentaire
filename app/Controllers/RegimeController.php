@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\RegimeModel;
+use App\Models\UserModel;
 
 class RegimeController extends BaseController
 {
@@ -23,14 +24,22 @@ class RegimeController extends BaseController
 
     private function renderPage(string $mode)
     {
-        $user = session()->get('user');
+        $sessionUser = session()->get('user');
+        $userId = session()->get('user_id') ?? ($sessionUser['id'] ?? null);
 
-        if (!$user) {
+        if (!$sessionUser || !$userId) {
             return redirect()->to('/login');
         }
 
-        if ($user['role'] === 'admin') {
+        if ($sessionUser['role'] === 'admin') {
             return redirect()->to('/admin/dashboard');
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->findUserById((int) $userId);
+
+        if (!$user) {
+            return redirect()->to('/login');
         }
 
         $regimeModel = new RegimeModel();
@@ -41,20 +50,18 @@ class RegimeController extends BaseController
         if ($mode === 'perdre') {
             $titre = 'Perdre du poids';
             $intro = 'Regimes avec une variation negative pour une perte de poids progressive.';
-            $regimes = $regimeModel
-                ->where('variation_poids_grammes <', 0)
-                ->orderBy('variation_poids_grammes', 'ASC')
-                ->findAll();
+            $regimes = $regimeModel->getRegimesPertePoids();
         } elseif ($mode === 'gagner') {
             $titre = 'Gagner du poids';
             $intro = 'Regimes avec une variation positive pour soutenir la prise de poids.';
-            $regimes = $regimeModel
-                ->where('variation_poids_grammes >', 0)
-                ->orderBy('variation_poids_grammes', 'DESC')
-                ->findAll();
+            $regimes = $regimeModel->getRegimesGainPoids();
         } else {
             $titre = 'Atteindre son IMC';
-            $intro = 'Objectif IMC ideal. Les recommandations arrive bientot.';
+            $intro = 'Un IMC ideal se trouve entre 18,5 et 24,9 , voici ce qu\'on propose';
+
+            $imc = is_numeric($user['IMC']) ? (float) $user['IMC'] : null;
+
+            $regimes = $regimeModel->getRegimesForImc($imc);
         }
 
         return view('regime/index', [

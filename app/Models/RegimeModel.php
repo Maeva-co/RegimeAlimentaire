@@ -40,4 +40,46 @@ class RegimeModel extends Model
             'greater_than' => 'La durée doit être supérieure à 0'
         ]
     ];
+
+    public function getRegimesPertePoids(): array
+    {
+        return $this
+            ->where('variation_poids_grammes <', 0)
+            ->orderBy('variation_poids_grammes', 'ASC')
+            ->findAll();
+    }
+
+    public function getRegimesGainPoids(): array
+    {
+        return $this
+            ->where('variation_poids_grammes >', 0)
+            ->orderBy('variation_poids_grammes', 'DESC')
+            ->findAll();
+    }
+
+    public function getRegimesVariationFaible(): array
+    {
+        return $this
+            ->where('variation_poids_grammes >=', -50)
+            ->where('variation_poids_grammes <=', 50)
+            ->orderBy('variation_poids_grammes', 'ASC')
+            ->findAll();
+    }
+
+    public function getRegimesForImc(?float $imc): array
+    {
+        if ($imc === null) {
+            return [];
+        }
+
+        if ($imc > 24.9) {
+            return $this->getRegimesPertePoids();
+        }
+
+        if ($imc < 18.5) {
+            return $this->getRegimesGainPoids();
+        }
+
+        return $this->getRegimesVariationFaible();
+    }
 }
