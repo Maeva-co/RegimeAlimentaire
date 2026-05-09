@@ -16,7 +16,9 @@
     - Ces trois bouttons respectifs sont plus ou moins grand afin de mettre de l'emphase sur les choix que peuvent faire l'utilisateur (et sera plus facile a voir)
     - Cliquer sur ces liens va rediriger dans une meme page , dont les resultats qui s'affichent changent dependant du choix 
     - Deja qu'import le choix , la page affichera en premier une section bilan de l'utilisateur connecte, ce bilan affichera son nom , son genre , son poids , sa taille et som IMC
-    - Ensuite voila comment le contenur va varier : si on a choisi /regime/perdre , il affichera les regimes qui permettent de perdre du poids (synthaxe sql a respecter)
+    - Ensuite voila comment le contenur va varier : si on a choisi /regime/perdre , il affichera les regimes qui permettent de perdre du poids (syntaxe sql a respecter), si on a choisi /regime/gagner, afficher les regimes qui
+    permettent de gagner du poids (pour savoir si un regime fait gagner ou perdre du poids, sa variation_poids_grammes sera positif si gain et negatif si perte de poids), si on a choisi l'option d'atteindre son IMC ideal, il n'ajoute rien pour l'instant
+    - Note to self : doit respecter structure mvc
 
     
 ## On peut rajouter de l’argent dans son porte monnaie en rentrant un code

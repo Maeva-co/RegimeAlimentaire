@@ -21,9 +21,9 @@
                 simples pour avancer chaque jour.
             </p>
             <div class="hero-actions">
-                <a class="hero-btn" href="/regime/predre">Perdre du poids</a>
-                <a class="hero-btn hero-btn-secondary" href="/regime/gagner">Gagner du Poids</a>
-                <a class="hero-btn hero-btn-ghost" href="/regime/imc">Atteindre son IMC</a>
+                <a class="hero-btn hero-btn-large" href="/regime/perdre">Perdre du poids</a>
+                <a class="hero-btn hero-btn-secondary hero-btn-medium" href="/regime/gagner">Gagner du Poids</a>
+                <a class="hero-btn hero-btn-ghost hero-btn-small" href="/regime/imc">Atteindre son IMC</a>
             </div>
         </section>
 

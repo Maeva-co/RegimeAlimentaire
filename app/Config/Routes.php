@@ -12,6 +12,9 @@ $routes->get('/login', 'AuthController::loginForm');
 $routes->post('/login', 'AuthController::login');
 $routes->get('/logout', 'AuthController::logout');
 $routes->get('/hero', 'HomeController::hero');
+$routes->get('/regime/perdre', 'RegimeController::perdre');
+$routes->get('/regime/gagner', 'RegimeController::gagner');
+$routes->get('/regime/imc', 'RegimeController::imc');
 
 // Back Office Admin
 $routes->group('admin', ['filter' => 'role:admin'], function($routes) {

@@ -118,6 +118,21 @@ body.hero-page::after {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.hero-btn-large {
+    padding: 1rem 2.1rem;
+    font-size: 1.05rem;
+}
+
+.hero-btn-medium {
+    padding: 0.9rem 1.8rem;
+    font-size: 0.98rem;
+}
+
+.hero-btn-small {
+    padding: 0.75rem 1.4rem;
+    font-size: 0.9rem;
+}
+
 .hero-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 16px 30px rgba(31, 98, 59, 0.28);
