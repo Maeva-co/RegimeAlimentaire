@@ -23,6 +23,21 @@ class AuthController extends BaseController
         if (!$user || $user['password'] != $password) {
             return redirect()->back()->with('erreur', 'Email ou mot de passe incorrect');
         }
+
+        if ($user['IMC'] === null) {
+            $tailleCm = $user['taille'];
+            $poidsKg = $user['poids'];
+
+            if (is_numeric($tailleCm) && is_numeric($poidsKg) && (float) $tailleCm > 0) {
+                $tailleM = (float) $tailleCm / 100;
+
+                if ($tailleM > 0) {
+                    $imc = round((float) $poidsKg / ($tailleM * $tailleM), 2);
+                    $model->update($user['id'], ['IMC' => $imc]);
+                    $user['IMC'] = $imc;
+                }
+            }
+        }
         
         
         session()->set('user', [
@@ -31,12 +46,14 @@ class AuthController extends BaseController
             'email' => $user['email'],
             'role'  => $user['role']
         ]);
+
+        session()->set('user_id', $user['id']);
         
         
         if ($user['role'] === 'admin') {
             return redirect()->to('/admin/dashboard');
         } else {
-            return redirect()->to('/');
+            return redirect()->to('/hero');
         }
     }
     

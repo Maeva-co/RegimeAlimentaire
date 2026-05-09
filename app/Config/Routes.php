@@ -11,6 +11,7 @@ $routes->get('/', 'HomeController::index');
 $routes->get('/login', 'AuthController::loginForm');
 $routes->post('/login', 'AuthController::login');
 $routes->get('/logout', 'AuthController::logout');
+$routes->get('/hero', 'HomeController::hero');
 
 // Back Office Admin
 $routes->group('admin', ['filter' => 'role:admin'], function($routes) {

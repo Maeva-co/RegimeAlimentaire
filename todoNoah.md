@@ -1,8 +1,23 @@
 ## L’application suggère les régimes et l’activité sportive nécessaire pendant une durée
-- Donnees de test (User)
-- Prendre l'objectif, l'IMC
-- Choisir les sports et les regimes adequats aux choix (ce regime la pour cette duree la)
-- Achat et diminution de la balance
+- Tout commence par le login :
+    - Si c'est un login admin, rediriger vers le dashboard
+    - Sinon c'est un login utilisateur normal
+    - lors du login , il verifie si l'imc de l'utilisateur est null, si c'est le cas il faut le remplir :
+        l'imc se calcule par le poids en kg / la taille en m^2, mais les donnees dans la db sont poids en kg et taille
+        en cm, donc il faut encore convertir la taille en m
+    - Si l'utilisateur veut voir le dashboard, il doit se connecter en tant qu'admin
+    - Apres login, si l'id de l'utilisateur doit etre stocke dans une variable session (pas encore le cas dans la fonction post login())
+    - Pour l'instant : l'admin se fait rediriger vers le dashboard
+    - Maintenant : il faut que si la connection est de type user ($user['role'] === 'user'), il se fait rediriger vers
+    le hero page
+    - Dans le hero page , il y aura une section qui dira 'Diet Balance, votre solution pour vos objectifs de poids ',
+    en dessous de cette section se trouve trois bouttons avec les labels suivants : Perdre du poids, Gagner du Poids,
+    atteindre son IMC , chacun pointant vers un lien correspondant : /regime/predre ; /regime/gagner; /regime/imc
+    - Ces trois bouttons respectifs sont plus ou moins grand afin de mettre de l'emphase sur les choix que peuvent faire l'utilisateur (et sera plus facile a voir)
+    - Cliquer sur ces liens va rediriger dans une meme page , dont les resultats qui s'affichent changent dependant du choix 
+    - Deja qu'import le choix , la page affichera en premier une section bilan de l'utilisateur connecte, ce bilan affichera son nom , son genre , son poids , sa taille et som IMC
+    - Ensuite voila comment le contenur va varier : si on a choisi /regime/perdre , il affichera les regimes qui permettent de perdre du poids (synthaxe sql a respecter)
+
     
 ## On peut rajouter de l’argent dans son porte monnaie en rentrant un code
 

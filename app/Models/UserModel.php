@@ -13,9 +13,7 @@ class UserModel extends Model
         'taille', 'poids', 'IMC', 'balance', 'role'
     ];
     
-    protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = null;
+    protected $useTimestamps = false;
     
     protected $validationRules = [
         'nom' => 'required|min_length[2]',
