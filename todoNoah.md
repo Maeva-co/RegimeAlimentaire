@@ -17,7 +17,7 @@
     - Cliquer sur ces liens va rediriger dans une meme page , dont les resultats qui s'affichent changent dependant du choix 
     - Deja qu'import le choix , la page affichera en premier une section bilan de l'utilisateur connecte, ce bilan affichera son nom , son genre , son poids , sa taille et som IMC
     - Ensuite voila comment le contenur va varier : si on a choisi /regime/perdre , il affichera les regimes qui permettent de perdre du poids (syntaxe sql a respecter), si on a choisi /regime/gagner, afficher les regimes qui
-    permettent de gagner du poids (pour savoir si un regime fait gagner ou perdre du poids, sa variation_poids_grammes sera positif si gain et negatif si perte de poids), si on a choisi l'option d'atteindre son IMC ideal, il n'ajoute rien pour l'instant
+    permettent de gagner du poids (pour savoir si un regime fait gagner ou perdre du poids, sa variation_poids_grammes sera positif si gain et negatif si perte de poids), si on a choisi l'option d'atteindre son IMC ideal (idealement entre 18,5 bet 24,9)
     - Note to self : doit respecter structure mvc
 
     
@@ -28,11 +28,12 @@
     - 1 user
     - 1 code avec valeur > 0
 
-- Page pour redeem un code :
-    - Input code 
-    - Submit :
+- Page pour redeem un code (dans la meme page que hero, un bouton dans une differente section menant avec un lien vers redeem code):
+    - Text input du code lui meme
+    - Upon Submit :
         - Verifier si code existe
-        - Si code existe , augmenter balance
+        - Si code existe , augmenter balance de l'utilisateur actuel (findUserById ( session user id))
+        - Marquer le code comme utilise (utilise = 1)
         - Sinon message erreur
     
 Tables inclues : User (balance), Code

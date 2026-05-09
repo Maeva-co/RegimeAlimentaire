@@ -15,6 +15,8 @@ $routes->get('/hero', 'HomeController::hero');
 $routes->get('/regime/perdre', 'RegimeController::perdre');
 $routes->get('/regime/gagner', 'RegimeController::gagner');
 $routes->get('/regime/imc', 'RegimeController::imc');
+$routes->get('/code/redeem', 'CodeController::redeemForm');
+$routes->post('/code/redeem', 'CodeController::redeem');
 
 // Back Office Admin
 $routes->group('admin', ['filter' => 'role:admin'], function($routes) {

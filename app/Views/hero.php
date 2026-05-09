@@ -56,5 +56,16 @@
             </div>
         </aside>
     </main>
+
+    <section class="hero-redeem">
+        <div class="redeem-card">
+            <div>
+                <span class="redeem-kicker">Recharge rapide</span>
+                <h2>Ajoutez un code pour alimenter votre balance</h2>
+                <p>Utilisez un code valide pour augmenter votre solde en quelques secondes.</p>
+            </div>
+            <a class="redeem-btn" href="/code/redeem">Utiliser un code</a>
+        </div>
+    </section>
 </body>
 </html>
