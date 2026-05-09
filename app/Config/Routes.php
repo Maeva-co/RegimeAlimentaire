@@ -15,6 +15,8 @@ $routes->get('/hero', 'HomeController::hero');
 $routes->get('/regime/perdre', 'RegimeController::perdre');
 $routes->get('/regime/gagner', 'RegimeController::gagner');
 $routes->get('/regime/imc', 'RegimeController::imc');
+$routes->post('/regime/perdre/pdf', 'RegimeController::exportPerdrePdf');
+$routes->post('/regime/gagner/pdf', 'RegimeController::exportGagnerPdf');
 $routes->get('/code/redeem', 'CodeController::redeemForm');
 $routes->post('/code/redeem', 'CodeController::redeem');
 

@@ -23,7 +23,7 @@
     - Dans /regime/perdre et dans /regime/gagner ajouter un moyen d'exporter le pdf suivant :
     chaque page aure un input nombre : variation (perte ou gain) poids desire (en kg). avec un texte : choisissez votre programme maintenant
     par exemple mon input sera 3 kg , il importera un pdf dans lequel il affichera les sport et la duree necessaire
-    correspondante pour chaque sport pour (perdre ou gagner du poids , selon l'option de l'user) atteindre la variation de poids desire; de meme pour le regime (sachant que le regime doit etre soit gain soit perte de poids selon le choix de l'User)
+    correspondante pour chaque sport pour (perdre ou gagner du poids , selon l'option de l'user) atteindre la variation de poids desire; de meme pour le regime (sachant que le regime doit etre soit gain soit perte de poids selon le choix de)
     
 ## On peut rajouter de l’argent dans son porte monnaie en rentrant un code
 

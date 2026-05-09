@@ -82,4 +82,36 @@ class RegimeModel extends Model
 
         return $this->getRegimesVariationFaible();
     }
+
+    public function getProgrammeParObjectif(string $mode, float $targetKg): array
+    {
+        if ($targetKg <= 0) {
+            return [];
+        }
+
+        $items = $mode === 'perdre'
+            ? $this->getRegimesPertePoids()
+            : $this->getRegimesGainPoids();
+
+        return $this->buildProgramme($items, $targetKg);
+    }
+
+    protected function buildProgramme(array $items, float $targetKg): array
+    {
+        $targetGrams = $targetKg * 1000;
+        $plans = [];
+
+        foreach ($items as $item) {
+            $daily = abs((float) $item['variation_poids_grammes']);
+            if ($daily <= 0) {
+                continue;
+            }
+
+            $item['jours_necessaires'] = (int) ceil($targetGrams / $daily);
+            $item['variation_jour'] = (float) $item['variation_poids_grammes'];
+            $plans[] = $item;
+        }
+
+        return $plans;
+    }
 }
