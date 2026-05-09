@@ -48,6 +48,38 @@
             </div>
         </section>
 
+        <?php if ($mode === 'perdre' || $mode === 'gagner'): ?>
+            <?php $exportUrl = $mode === 'perdre' ? '/regime/perdre/pdf' : '/regime/gagner/pdf'; ?>
+            <section class="programme-form">
+                <div>
+                    <h2>Choisissez votre programme maintenant</h2>
+                    <p>Indiquez la variation de poids desiree pour generer votre PDF.</p>
+                </div>
+
+                <?php if (session()->getFlashdata('erreur')): ?>
+                    <div class="alert alert-error">
+                        <?= esc(session()->getFlashdata('erreur')) ?>
+                    </div>
+                <?php endif; ?>
+
+                <form action="<?= esc($exportUrl) ?>" method="POST">
+                    <?= csrf_field() ?>
+                    <label for="target_kg">Variation (kg)</label>
+                    <div class="programme-input">
+                        <input
+                            type="number"
+                            id="target_kg"
+                            name="target_kg"
+                            min="0.1"
+                            step="0.1"
+                            value="<?= esc(old('target_kg') ?? '') ?>"
+                            required>
+                        <button type="submit">Exporter le PDF</button>
+                    </div>
+                </form>
+            </section>
+        <?php endif; ?>
+
         <section class="regime-results">
             <div class="section-head">
                 <h2>Recommandations</h2>

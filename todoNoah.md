@@ -20,7 +20,10 @@
     permettent de gagner du poids (pour savoir si un regime fait gagner ou perdre du poids, sa variation_poids_grammes sera positif si gain et negatif si perte de poids), si on a choisi l'option d'atteindre son IMC ideal (idealement entre 18,5 bet 24,9)
     - Afficher les sports adequats pour chaque lien (meme regle que pour les precedents pour perdre et gagner)
     - Note to self : doit respecter structure mvc
-
+    - Dans /regime/perdre et dans /regime/gagner ajouter un moyen d'exporter le pdf suivant :
+    chaque page aure un input nombre : variation (perte ou gain) poids desire (en kg). avec un texte : choisissez votre programme maintenant
+    par exemple mon input sera 3 kg , il importera un pdf dans lequel il affichera les sport et la duree necessaire
+    correspondante pour chaque sport pour (perdre ou gagner du poids , selon l'option de l'user) atteindre la variation de poids desire; de meme pour le regime (sachant que le regime doit etre soit gain soit perte de poids selon le choix de l'User)
     
 ## On peut rajouter de l’argent dans son porte monnaie en rentrant un code
 
