@@ -115,6 +115,11 @@
                 </button>
             </form>
 
+            <div class="login-register">
+                Pas encore de compte ?
+                <a href="/register">S'inscrire</a>
+            </div>
+
             <div class="demo-info">
                 <div class="demo-title">
                     <i class="fas fa-circle-info"></i>
